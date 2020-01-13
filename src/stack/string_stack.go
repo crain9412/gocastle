@@ -4,7 +4,7 @@ import (
 	"strings"
 )
 
-const EmptyStack = "_"
+const EmptyStack = "∅"
 const LeftParen = "["
 const RightParen = "]"
 const Connector = " -> "

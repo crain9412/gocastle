@@ -23,7 +23,7 @@ func Test_StringStack_Pop(t *testing.T) {
 }
 
 func Test_StringStack_Pop_Too_Many(t *testing.T) {
-	want := "_"
+	want := "∅"
 	stack := new(StringStack)
 	stack.Push("hello")
 	stack.Push("world")
