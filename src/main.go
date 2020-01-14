@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"queue"
 	"stack"
+	"crainsort"
 )
 
 func main() {
@@ -26,4 +27,7 @@ func main() {
 	fmt.Println(queue.Poll())
 	fmt.Println(queue.Poll())
 	fmt.Println(queue.Poll())
+
+	coolUnsortedArray := []int{5, 3, 2, 2, 1, 4}
+	fmt.Println(crainsort.IntMergesort(coolUnsortedArray))
 }
