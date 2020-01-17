@@ -30,4 +30,8 @@ func main() {
 
 	coolUnsortedArray := []int{5, 3, 2, 2, 1, 4}
 	fmt.Println(crainsort.IntMergesort(coolUnsortedArray))
+
+	coolerUnsortedArray := []int{5, 3, 2, 2, 1, 4, 0}
+	crainsort.IntQuicksort(coolerUnsortedArray)
+	fmt.Println(coolerUnsortedArray)
 }
