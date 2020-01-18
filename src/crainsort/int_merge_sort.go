@@ -8,8 +8,8 @@ func IntMergesort(arr []int) []int {
 	}
 
 	mid := size / 2
-	left := IntMergesort(arr[0:mid])
-	right := IntMergesort(arr[mid:size])
+	left := IntMergesort(arr[:mid])
+	right := IntMergesort(arr[mid:])
 	return Merge(left, right)
 }
 

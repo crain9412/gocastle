@@ -9,10 +9,10 @@ func IntQuicksort(arr []int) {
 
 	pivot := Partition(arr)
 	if pivot > 0 {
-		IntQuicksort(arr[0:pivot])
+		IntQuicksort(arr[:pivot])
 	}
 	if pivot+1 < size {
-		IntQuicksort(arr[pivot+1 : size])
+		IntQuicksort(arr[pivot+1:])
 	}
 }
 

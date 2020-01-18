@@ -1,10 +1,11 @@
 package main
 
 import (
+	"crainsort"
 	"fmt"
 	"queue"
 	"stack"
-	"crainsort"
+	"parallel"
 )
 
 func main() {
@@ -34,4 +35,12 @@ func main() {
 	coolerUnsortedArray := []int{5, 3, 2, 2, 1, 4, 0}
 	crainsort.IntQuicksort(coolerUnsortedArray)
 	fmt.Println(coolerUnsortedArray)
+
+	coolBigArray := []int{0}
+
+	for i := 1; i <= 10000; i++ {
+		coolBigArray = append(coolBigArray, i)
+	}
+
+	fmt.Println(parallel.Sum(coolBigArray))
 }
