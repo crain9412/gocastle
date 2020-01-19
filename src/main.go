@@ -6,6 +6,7 @@ import (
 	"queue"
 	"stack"
 	"parallel"
+	"time"
 )
 
 func main() {
@@ -43,4 +44,14 @@ func main() {
 	}
 
 	fmt.Println(parallel.Sum(coolBigArray))
+
+	safeMap := parallel.InitSafeMap()
+
+	go safeMap.Put("Hello", []string{"this", "is", "jon"})
+
+	fmt.Println(safeMap.Get("Hello"))
+
+	time.Sleep(100 * time.Millisecond)
+
+	fmt.Println(safeMap.Get("Hello"))
 }
