@@ -17,7 +17,11 @@ func Test_StringStack_Poll(t *testing.T) {
 	queue := new(StringQueue)
 	queue.Add("hello")
 	queue.Add("world")
-	if got := queue.Poll(); got != want {
+	if got, ok := queue.Poll(); got != want {
+		if !ok {
+			t.Errorf("Queue didn't contain any elements")
+		}
+
 		t.Errorf("Queue first element was %q, want %q", got, want)
 	}
 }
@@ -31,7 +35,11 @@ func Test_StringStack_PollTooMany(t *testing.T) {
 	queue.Poll()
 	queue.Poll()
 	queue.Poll()
-	if got := queue.Poll(); got != want {
+	if got, ok := queue.Poll(); got != want {
+		if !ok {
+			t.Errorf("Queue didn't contain any elements")
+		}
+
 		t.Errorf("Queue first element was %q, want %q", got, want)
 	}
 }

@@ -50,15 +50,15 @@ func (stack *StringStack) Print() string {
 	return stringBuilder.String()
 }
 
-func (stack *StringStack) Pop() string {
+func (stack *StringStack) Pop() (string, bool) {
 	oldHead := stack.head
 	if oldHead == nil {
-		return EmptyStack
+		return EmptyStack, false
 	}
 	if oldHead.next == nil {
 		stack.head = nil
 	} else {
 		stack.head = oldHead.next
 	}
-	return oldHead.data
+	return oldHead.data, true
 }

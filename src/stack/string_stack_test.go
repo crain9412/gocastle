@@ -17,7 +17,10 @@ func Test_StringStack_Pop(t *testing.T) {
 	stack := new(StringStack)
 	stack.Push("hello")
 	stack.Push("world")
-	if got := stack.Pop(); got != want {
+	if got, ok := stack.Pop(); got != want {
+		if !ok {
+			t.Errorf("Stack didn't contain any elements")
+		}
 		t.Errorf("Stack's head was %q, want %q", got, want)
 	}
 }
@@ -32,7 +35,10 @@ func Test_StringStack_Pop_Too_Many(t *testing.T) {
 	stack.Pop()
 	stack.Pop()
 	stack.Pop()
-	if got := stack.Pop(); got != want {
+	if got, ok := stack.Pop(); got != want {
+		if !ok {
+			t.Errorf("Stack didn't contain any elements")
+		}
 		t.Errorf("Stack's head was %q, want %q", got, want)
 	}
 }

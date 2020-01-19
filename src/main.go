@@ -3,9 +3,9 @@ package main
 import (
 	"crainsort"
 	"fmt"
+	"parallel"
 	"queue"
 	"stack"
-	"parallel"
 	"time"
 )
 

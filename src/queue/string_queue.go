@@ -57,10 +57,10 @@ func (queue *StringQueue) Print() string {
 	return stringBuilder.String()
 }
 
-func (queue *StringQueue) Poll() string {
+func (queue *StringQueue) Poll() (string, bool) {
 	oldTail := queue.tail
 	if oldTail == nil {
-		return EmptyQueue
+		return EmptyQueue, false
 	}
 	if oldTail.prev == nil {
 		queue.head = nil
@@ -68,5 +68,5 @@ func (queue *StringQueue) Poll() string {
 	} else {
 		queue.tail = oldTail.prev
 	}
-	return oldTail.data
+	return oldTail.data, true
 }
