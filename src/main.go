@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"parallel"
 	"queue"
+	"search"
 	"stack"
 	"time"
 )
@@ -54,4 +55,6 @@ func main() {
 	time.Sleep(100 * time.Millisecond)
 
 	fmt.Println(safeMap.Get("Hello"))
+
+	search.CreateRandomTextFiles(100, 10000)
 }
