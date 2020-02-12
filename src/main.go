@@ -56,11 +56,13 @@ func main() {
 
 	fmt.Println(safeMap.Get("Hello"))
 
-	search.CreateRandomTextFiles(100, 10000)
+	search.CreateRandomTextFiles(10000, 500)
 
 	searchEngine := search.InitSearchEngine()
 
-	searchEngine.Query("hello")
+	helloResults := searchEngine.Query("hello")
 
-	searchEngine.Print()
+	fmt.Printf("Found results for query string `hello`: %v", helloResults)
+
+	searchEngine.PrintTopTen()
 }

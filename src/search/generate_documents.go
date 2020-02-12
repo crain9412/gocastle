@@ -2,10 +2,10 @@ package search
 
 import (
 	"bufio"
+	"fmt"
 	"math/rand"
 	"os"
 	"strconv"
-	"fmt"
 )
 
 const OutputFolder = "../out"
@@ -36,7 +36,7 @@ func CreateRandomTextFiles(numDocs, numWordsPerDoc int) {
 	for i := 0; i < numDocs; i++ {
 		documentName := OutputFolder + "/" + strconv.Itoa(i) + ".txt"
 
-		if i % 10 == 0 {
+		if i%10 == 0 {
 			fmt.Printf("Finished %d files\n", i)
 		}
 

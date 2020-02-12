@@ -2,10 +2,12 @@ package search
 
 import (
 	"bufio"
+	"fmt"
 	"log"
+	"math"
 	"os"
 	"path/filepath"
-	"fmt"
+	"runtime"
 )
 
 type SearchEngine struct {
@@ -22,14 +24,14 @@ func InitSearchEngine() *SearchEngine {
 	return &SearchEngine{index: createInverseIndex()}
 }
 
-func (searchEngine *SearchEngine) Query(query string) []string {
+func (searchEngine *SearchEngine) Query(query string) ([]string, bool) {
 	result, ok := searchEngine.index.data[query]
 
 	if ok {
-		return result
-	} else {
-		return make([]string, 1)
+		return result, true
 	}
+
+	return nil, false
 }
 
 func (searchEngine *SearchEngine) Print() {
@@ -39,10 +41,56 @@ func (searchEngine *SearchEngine) Print() {
 	}
 }
 
+func (searchEngine *SearchEngine) PrintTopTen() {
+	fmt.Println("Printing top ten most frequent terms")
+
+	currentFreqs := make(map[string]int, 10)
+
+	i := 0
+
+	for key, value := range searchEngine.index.data {
+		if i < 10 {
+			currentFreqs[key] = len(value)
+		} else {
+			min, evict := getMinThreshold(currentFreqs)
+			if len(value) > min {
+				delete(currentFreqs, evict)
+				currentFreqs[key] = len(value)
+			}
+		}
+		i++
+	}
+
+	for key := range currentFreqs {
+		fmt.Printf("%s=%v\n", key, searchEngine.index.data[key])
+	}
+}
+
+func getMinThreshold(currentFreqs map[string]int) (int, string) {
+	min := math.MaxInt64
+	evict := "Placeholder"
+
+	for key, value := range currentFreqs {
+		if evict == "Placeholder" {
+			/* if everything ties evict a random one */
+			evict = key
+		}
+
+		if value < min {
+			min = value
+			evict = key
+		}
+	}
+
+	return min, evict
+}
+
 func createInverseIndex() *InverseIndex {
 	inverseIndex := &InverseIndex{data: make(map[string][]string, 100)}
 
 	fmt.Println("Creating inverse index")
+
+	PrintMemUsage()
 
 	i := 0
 
@@ -52,7 +100,7 @@ func createInverseIndex() *InverseIndex {
 				return err
 			}
 
-			if i % 10 == 0 {
+			if i%10 == 0 {
 				fmt.Printf("Finished %d files\n", i)
 			}
 
@@ -69,6 +117,10 @@ func createInverseIndex() *InverseIndex {
 
 				for scanner.Scan() {
 					line := scanner.Text()
+
+					if line == " " || line == "" {
+						continue
+					}
 
 					currentDocuments, ok := inverseIndex.data[line]
 
@@ -97,5 +149,23 @@ func createInverseIndex() *InverseIndex {
 
 	fmt.Println("Finished creating inverse index")
 
+	PrintMemUsage()
+
 	return inverseIndex
+}
+
+// PrintMemUsage outputs the current, total and OS memory being used. As well as the number
+// of garage collection cycles completed.
+func PrintMemUsage() {
+	var m runtime.MemStats
+	runtime.ReadMemStats(&m)
+	// For info on each, see: https://golang.org/pkg/runtime/#MemStats
+	fmt.Printf("Alloc = %v MiB", bToMb(m.Alloc))
+	fmt.Printf("\tTotalAlloc = %v MiB", bToMb(m.TotalAlloc))
+	fmt.Printf("\tSys = %v MiB", bToMb(m.Sys))
+	fmt.Printf("\tNumGC = %v\n", m.NumGC)
+}
+
+func bToMb(b uint64) uint64 {
+	return b / 1024 / 1024
 }
