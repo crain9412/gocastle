@@ -57,4 +57,10 @@ func main() {
 	fmt.Println(safeMap.Get("Hello"))
 
 	search.CreateRandomTextFiles(100, 10000)
+
+	searchEngine := search.InitSearchEngine()
+
+	searchEngine.Query("hello")
+
+	searchEngine.Print()
 }

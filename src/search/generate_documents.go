@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"os"
 	"strconv"
+	"fmt"
 )
 
 const OutputFolder = "../out"
@@ -15,6 +16,8 @@ type EnglishDictionary struct {
 
 func CreateRandomTextFiles(numDocs, numWordsPerDoc int) {
 	englishDictionary := loadEnglishDictionary()
+
+	fmt.Println("Cleaning output folder")
 
 	err := os.RemoveAll(OutputFolder)
 
@@ -28,8 +31,14 @@ func CreateRandomTextFiles(numDocs, numWordsPerDoc int) {
 		panic(err)
 	}
 
+	fmt.Println("Randomly generating files")
+
 	for i := 0; i < numDocs; i++ {
 		documentName := OutputFolder + "/" + strconv.Itoa(i) + ".txt"
+
+		if i % 10 == 0 {
+			fmt.Printf("Finished %d files\n", i)
+		}
 
 		createdFile, err := os.Create(documentName)
 		defer createdFile.Close()
@@ -41,16 +50,20 @@ func CreateRandomTextFiles(numDocs, numWordsPerDoc int) {
 		for j := 0; j < numWordsPerDoc; j++ {
 			randomWordIndex := rand.Intn(len(englishDictionary.words))
 
-			_, err := createdFile.WriteString(englishDictionary.words[randomWordIndex] + " ")
+			_, err := createdFile.WriteString(englishDictionary.words[randomWordIndex] + "\n")
 
 			if err != nil {
 				panic(err)
 			}
 		}
 	}
+
+	fmt.Println("Finished randomly generating files")
 }
 
 func loadEnglishDictionary() *EnglishDictionary {
+	fmt.Println("Loading English dictionary into memory")
+
 	words := make([]string, 10000)
 
 	englishDictionary := &EnglishDictionary{words: words}
@@ -74,6 +87,8 @@ func loadEnglishDictionary() *EnglishDictionary {
 	if scanner.Err() != nil {
 		panic(scanner.Err())
 	}
+
+	fmt.Println("Finished loading English dictionary into memory")
 
 	return englishDictionary
 }
